@@ -1,0 +1,72 @@
+services:
+  # Application PHP avec FrankenPHP
+  app:
+    image: ghcr.io/jturazzi/contacts-sync:latest
+    container_name: contacts-sync-app
+    restart: unless-stopped
+    ports:
+      - "${PORT_APP:-8080}:8080"
+    volumes:
+      - storage-data:/var/www/html/storage
+    environment:
+      APP_URL: ""
+      APP_TIMEZONE: "UTC"
+      APP_LOCALE: "en"
+      # Microsoft Entra ID
+      MICROSOFT_CLIENT_ID: ""
+      MICROSOFT_CLIENT_SECRET: ""
+      MICROSOFT_REDIRECT_URI: ""
+      MICROSOFT_TENANT_ID: ""
+    command: ["frankenphp", "run"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  # Worker pour les queues Laravel
+  queue:
+    image: ghcr.io/jturazzi/contacts-sync:latest
+    container_name: contacts-sync-queue
+    restart: unless-stopped
+    command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3"]
+    stop_signal: SIGTERM
+    volumes:
+      - storage-data:/var/www/html/storage
+    environment:
+      AUTORUN_LARAVEL_MIGRATION: false
+      APP_TIMEZONE: "UTC"
+      APP_LOCALE: "en"
+      MICROSOFT_CLIENT_ID: ""
+      MICROSOFT_CLIENT_SECRET: ""
+      MICROSOFT_REDIRECT_URI: ""
+      MICROSOFT_TENANT_ID: ""
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+
+  # Cron Laravel
+  cron:
+    image: ghcr.io/jturazzi/contacts-sync:latest
+    container_name: contacts-sync-cron
+    restart: unless-stopped
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    volumes:
+      - storage-data:/var/www/html/storage
+    environment:
+      AUTORUN_LARAVEL_MIGRATION: false
+      APP_TIMEZONE: "UTC"
+      APP_LOCALE: "en"
+      MICROSOFT_CLIENT_ID: ""
+      MICROSOFT_CLIENT_SECRET: ""
+      MICROSOFT_REDIRECT_URI: ""
+      MICROSOFT_TENANT_ID: ""
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 10s
+
+volumes:
+  storage-data:
+    driver: local
