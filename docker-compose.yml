@@ -51,7 +51,7 @@ services:
     image: ghcr.io/jturazzi/contacts-sync:latest
     container_name: contacts-sync-cron
     restart: unless-stopped
-    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    command: ["sh", "-c", "php /var/www/html/artisan sync:run-all; exec php /var/www/html/artisan schedule:work"]
     stop_signal: SIGTERM
     volumes:
       - storage-data:/var/www/html/storage
