@@ -42,11 +42,6 @@ RUN apk add --no-cache \
     && docker-php-ext-install -j$(nproc) gd \
     && apk del .build-deps
 
-# Alpine's ca-certificates bundle is missing the legacy "DigiCert Global Root CA",
-# which signs "DigiCert Cloud Services CA-1" used by mail.protection.outlook.com
-COPY docker/certs/DigiCertGlobalRootCA.pem /usr/local/share/ca-certificates/DigiCertGlobalRootCA.crt
-RUN update-ca-certificates
-
 # Préparation des répertoires de l'application
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache /etc/caddy  \
     && chown -R www-data:www-data /var/www/html
