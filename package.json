@@ -10,7 +10,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "@vitejs/plugin-vue": "^6.0.9",
         "concurrently": "^10.0.3",
-        "fontaine": "^0.8.2",
+        "fontaine": "^1.0.0",
         "laravel-vite-plugin": "^3.1",
         "tailwindcss": "^4.3.3",
         "vite": "^8.3.0"
