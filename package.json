@@ -13,13 +13,13 @@
         "fontaine": "^0.8.2",
         "laravel-vite-plugin": "^3.1",
         "tailwindcss": "^4.3.3",
-        "vite": "^8.3.1"
+        "vite": "^8.3.2"
     },
     "optionalDependencies": {
-        "@laravel/multiplex": "^0.4.4"
+        "@laravel/multiplex": "^0.4.5"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^3.7.1",
+        "@inertiajs/vue3": "^3.8.0",
         "axios": "^1.20.0",
         "vue": "^3.5.43",
         "vue-i18n": "^11.4.12",
