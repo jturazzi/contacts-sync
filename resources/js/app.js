@@ -5,6 +5,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js';
 import { createI18nInstance } from './i18n';
+import { initSentry } from './sentry';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - Contacts Sync` : 'Contacts Sync'),
@@ -13,7 +14,11 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const i18n = createI18nInstance(props.initialPage.props.locale);
 
-        createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) });
+
+        initSentry(app);
+
+        app
             .use(plugin)
             .use(ZiggyVue)
             .use(i18n)
