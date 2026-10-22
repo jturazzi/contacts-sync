@@ -18,8 +18,7 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
-    'version' => '1.0.0',
-
+    'version' => '2026.10.1',
     'github_url' => 'https://github.com/jturazzi/contacts-sync',
 
     'cipher' => 'AES-256-CBC',
