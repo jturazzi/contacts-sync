@@ -20,6 +20,11 @@ updates:
     labels:
       - "dependencies"
       - "npm"
+    ignore:
+      # laravel-vite-plugin (3.2.0) requires fontaine ^0.8 as a peer dependency:
+      # fontaine 1.x breaks `npm ci` on Node 20. Remove once the plugin accepts 1.x.
+      - dependency-name: "fontaine"
+        update-types: ["version-update:semver-major"]
 
   # --- Composer (PHP) ---
   - package-ecosystem: "composer"
