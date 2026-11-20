@@ -25,9 +25,6 @@ ENV AUTORUN_ENABLED=true
 
 USER root
 
-# mbstring n'est plus incluse dans l'image de base PHP 8.6
-RUN install-php-extensions mbstring
-
 # Installation des paquets système et de l'extension GD
 RUN apk add --no-cache \
     bash \
